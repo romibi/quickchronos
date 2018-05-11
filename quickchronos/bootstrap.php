@@ -2,7 +2,7 @@
 // Copyright (c) 2018 Rolf Michael Bislin. Licensed under the MIT license (see LICENSE.txt).
 namespace ch\romibi\quickchronos;
 require_once __DIR__ . '/../vendor/autoload.php';
-$config = require __DIR__ . '/../configs/config.php';
+$config = require __DIR__ . '/../config/config.php';
 
  
 use Doctrine\ORM\Tools\Setup;

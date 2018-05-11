@@ -2,9 +2,13 @@
 // Copyright (c) 2018 Rolf Michael Bislin. Licensed under the MIT license (see LICENSE.txt).
 namespace ch\romibi\quickchronos;
 
-//require_once 'entities/something.php';
+require_once 'entities/Project.php';
+require_once 'entities/Activity.php';
+require_once 'entities/User.php';
 
-//require_once 'controllers/somethingController.php';
+require_once 'controllers/ProjectController.php';
+require_once 'controllers/ActivityController.php';
+require_once 'controllers/UserController.php';
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -95,7 +99,9 @@ class QuickChronos {
 	}
 
 	private function initialize() {
-		//$this->controllers['something'] = new seomethingController($this->entityManager);
+		$this->controllers['project'] = new ProjectController($this->entityManager);
+		$this->controllers['activity'] = new ActivityController($this->entityManager);
+		$this->controllers['user'] = new UserController($this->entityManager);
 		
 		$this->initialized = true;
 	}

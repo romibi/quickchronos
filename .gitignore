@@ -1,5 +1,7 @@
 /vendor/
 /logs/*.log
 /templates/cache/*
-/configs/config.php
+/config/config.php
 /tmp/
+/data/*
+!/data/index.html
