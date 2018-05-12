@@ -2,6 +2,7 @@
 // Copyright (c) 2018 Rolf Michael Bislin. Licensed under the MIT license (see LICENSE.txt).
 namespace ch\romibi\quickchronos;
 require_once 'AbstractEntity.php';
+use \Doctrine\Common\Collections as DoctrineCollections;
 
 /**
 * @Entity @Table(name="activity")
@@ -12,10 +13,10 @@ class Activity extends AbstractEntity implements \JsonSerializable {
 	/** @Version @Column(type="integer") */
     private $version = 1;
 
-    /** @Column(type="date") **/
+    /** @Column(type="datetime") **/
     protected $start;
-    /** @Column(type="date") **/
-    protected $end;
+    /** @Column(type="datetime", nullable=true) **/
+    protected $stop = null;
 
     /**
 	  * @ManyToOne(targetEntity="Project")
@@ -29,16 +30,27 @@ class Activity extends AbstractEntity implements \JsonSerializable {
 	  */
     protected $user;
     
-	public function __construct($user, $project) {
+	public function __construct() {
+		 $this->start = new \DateTime();
+	}
+
+	public function forUser($user) {
+		if($this->id!=null) throw new \Exception("Error Processing Request", 1);
 		$this->user = $user;
+		return $this;
+	}
+
+	public function onProject($project) {
+		if($this->id!=null) throw new \Exception("Error Processing Request", 1);
 		$this->project = $project;
+		return $this;
 	}
 
 	public static function normalizedFromArray($array, $setDefaults=false) {
 		if(isset($array['id'])) { $ret['id'] = $array['id']; }
 		if(isset($array['start'])) { $ret['start'] = $array['start']; }
 		elseif($setDefaults) {}
-		if(isset($array['end'])) { $ret['end'] = $array['end']; }
+		if(isset($array['stop'])) { $ret['stop'] = $array['stop']; }
 		if(isset($array['projectId'])) { $ret['project'] = QuickChronos::getInstance()->project()->get($array['projectId']); }
 		if(isset($array['userId'])) { $ret['user'] = QuickChronos::getInstance()->project()->get($array['userId']); }
 
@@ -62,12 +74,12 @@ class Activity extends AbstractEntity implements \JsonSerializable {
 		$this->start = $start;
 	}
 
-	public function getEnd() {
-		return $this->end;
+	public function getStop() {
+		return $this->stop;
 	}
 
-	public function setEnd($end) {
-		$this->end = $end;
+	public function setStop($stop) {
+		$this->stop = $stop;
 	}
 
 	public function getProject() {
@@ -86,15 +98,17 @@ class Activity extends AbstractEntity implements \JsonSerializable {
 
 		$stop = null;
 		if($this->stop)
-			$start = date_format($this->stop,'Y-m-d H:i:s');
+			$stop = date_format($this->stop,'Y-m-d H:i:s');
 
 		$ret = array(
 			'id'=>$this->id,
+			'start'=>$start,
+			'stop'=>$stop,
 			'_version'=>$this->version
 		);
 
 		if($this->project)
-			$ret['_embedded']['project'] = $this->patient;
+			$ret['_embedded']['project'] = $this->project;
 		if($this->user)
 			$ret['_embedded']['user'] = $this->user;
 

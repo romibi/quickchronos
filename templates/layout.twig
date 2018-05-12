@@ -33,6 +33,7 @@
 	</head>
 	<body>
 		<div id="container">
+			<div id="user"><form onsubmit="login(); return false;"><input name="username" value="{{user.username}}"/><button type="submit">"Login"</button></form></div>
 			{% block content %} {% endblock %}
 		</div>
 		{% block modals %} {% endblock %}

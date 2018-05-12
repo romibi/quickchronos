@@ -13,5 +13,19 @@ class UserController {
 		$this->entityManager = $entityManager;
 		$this->repository = $entityManager->getRepository('ch\romibi\quickchronos\User');
 	}
+
+	public function find($key) {
+		if(preg_match("/^[0-9A-F]{8}\-(?:[0-9A-F]{4}\-){3}[0-9A-f]{12}$/", $key)) {
+			return $this->repository->find($key);
+		} else {
+			return $this->repository->findBy(array('username'=>$key))[0];
+		}
+	}
+
+	public function post($array) {
+		$newuser = User::fromArray($array);
+		$this->entityManager->persist($newuser);
+		$this->entityManager->flush();
+	}
 }
 ?>

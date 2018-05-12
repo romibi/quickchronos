@@ -2,17 +2,18 @@
 // Copyright (c) 2018 Rolf Michael Bislin. Licensed under the MIT license (see LICENSE.txt).
 namespace ch\romibi\quickchronos;
 require_once 'AbstractEntity.php';
+use \Doctrine\Common\Collections as DoctrineCollections;
 
 /**
 * @Entity @Table(name="user")
 **/
 class User extends AbstractEntity implements \JsonSerializable {
-	/** @Id @Column(type="integer") @GeneratedValue(strategy="UUID") **/
+	/** @Id @Column(type="guid") @GeneratedValue(strategy="UUID") **/
 	protected $id;
 	/** @Version @Column(type="integer") */
     private $version = 1;
 
-    /** @Column(type="string") **/
+    /** @Column(type="string", unique=true) **/
     protected $username;
 
     //no passwords yet
@@ -26,15 +27,20 @@ class User extends AbstractEntity implements \JsonSerializable {
      */
     private $projects;
 
-	public function __construct($username) {
-		$this->username = $username;
-		$this->activities = new ArrayCollection();
-		$this->projects = new ArrayCollection();
+    /**
+	  * @ManyToOne(targetEntity="Project")
+	  * @JoinColumn(name="activeProjectId", referencedColumnName="id")
+	  */
+    protected $activeProject;
+
+	public function __construct() {
+		$this->activities = new DoctrineCollections\ArrayCollection();
+		$this->projects = new DoctrineCollections\ArrayCollection();
 	}
 
 	public static function normalizedFromArray($array, $setDefaults=false) {
 		if(isset($array['id'])) { $ret['id'] = $array['id']; }
-		if(isset($array['name'])) { $ret['name'] = $array['name']; }
+		if(isset($array['username'])) { $ret['username'] = $array['username']; }
 		//TODO: validate more!
 		return $ret;
 	}
@@ -47,12 +53,12 @@ class User extends AbstractEntity implements \JsonSerializable {
 		return $this->version;
 	}
 
-	public function getName() {
-		return $this->name;
+	public function getUsername() {
+		return $this->username;
 	}
 
-	public function setName($name) {
-		$this->name = $name;
+	public function setUsername($name) {
+		$this->username = $username;
 	}
 
 	public function getMembers() {
@@ -63,11 +69,24 @@ class User extends AbstractEntity implements \JsonSerializable {
 		return $this->activities;
 	}
 
+	public function getActiveProject() {
+		return $this->activeProject;
+	}
+
+	public function setActiveProject($project) {
+		$this->activeProject = $project;
+	}
+
+	public function getCurrentActivity() {
+		if($this->activeProject==null) return null;
+		return $this->activeProject->getCurrentActivityForUser($this);
+	}
+
 	public function JsonSerialize()
 	{
 		return array(
 			'id'=>$this->id,
-			'name'=>$this->name,
+			'username'=>$this->username,
 			'_version'=>$this->version
 		);
 	}

@@ -70,6 +70,11 @@ class QuickChronos {
 		return $this->config;
 	}
 
+	public function getUser() {
+		$userid = $this->getCookie('user');
+		return $this->user()->find($userid);
+	}
+
 	public function getCookie($key, $default=null) {
 		if($default==null)
 			return FigRequestCookies::get($this->request, $key)->getValue();

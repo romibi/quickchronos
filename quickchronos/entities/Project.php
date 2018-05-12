@@ -2,6 +2,7 @@
 // Copyright (c) 2018 Rolf Michael Bislin. Licensed under the MIT license (see LICENSE.txt).
 namespace ch\romibi\quickchronos;
 require_once 'AbstractEntity.php';
+use \Doctrine\Common\Collections as DoctrineCollections;
 
 /**
 * @Entity @Table(name="project")
@@ -27,10 +28,9 @@ class Project extends AbstractEntity implements \JsonSerializable {
     /** @OneToMany(targetEntity="Activity", mappedBy="project") **/
     private $activities;
 
-	public function __construct($name) {
-		$this->name = $name;
-		$this->members = new ArrayCollection();
-		$this->activities = new ArrayCollection();
+	public function __construct() {
+		$this->members = new DoctrineCollections\ArrayCollection();
+		$this->activities = new DoctrineCollections\ArrayCollection();
 	}
 
 	public static function normalizedFromArray($array, $setDefaults=false) {
@@ -60,8 +60,24 @@ class Project extends AbstractEntity implements \JsonSerializable {
 		return $this->members;
 	}
 
+	public function addMember($user) {
+		$this->members->add($user);
+	}
+
 	public function getActivities() {
 		return $this->activities;
+	}
+
+	public function getCurrentActivityForUser($user) {
+		return QuickChronos::getInstance()->project()->getCurrentActivityForUserOnProject($user, $this);
+	}
+
+	public function getLastActivityForUser($user) {
+		$activity = $this->getCurrentActivityForUser($user);
+		if($activity!=null) {
+			return $activity;
+		}
+		return QuickChronos::getInstance()->project()->getLastActivityForUserOnProject($user, $this);
 	}
 
 	public function JsonSerialize()

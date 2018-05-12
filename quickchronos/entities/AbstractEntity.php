@@ -9,7 +9,7 @@ abstract class AbstractEntity {
 		$vals = static::normalizedFromArray($array, true);
 		//is this possible to do nicer?
 		$reflectionClass = new \ReflectionClass(get_called_class());
-		$entity = $reflectionClass->newInstanceWithoutConstructor();
+		$entity = $reflectionClass->newInstance();
 		
 		$entity->updateFromArray($vals, false);
 		return $entity;
@@ -28,6 +28,6 @@ abstract class AbstractEntity {
 	public abstract static function normalizedFromArray($array, $setDefaults=false);
 
 	public function __toString() {
-		return json_encode($obj);
+		return json_encode($this);
 	}
 }
