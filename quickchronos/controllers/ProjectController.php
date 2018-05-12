@@ -15,6 +15,10 @@ class ProjectController {
 		$this->activityRepository = $entityManager->getRepository('ch\romibi\quickchronos\Activity');
 	}
 
+	public function list() {
+		return $this->projectRepository->findBy(array());
+	}
+
 	public function get($id) {
 		return $this->projectRepository->find($id);
 	}

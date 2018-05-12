@@ -7,7 +7,12 @@ use ch\romibi\quickchronos;
 
 $app->group('', function () use ($app, $chronos) {
 	$app->get('/', function ($request, $response) use ($chronos) {
-		$this->view->render($response, 'index.twig');
+		$projects = $chronos->project()->list();
+		$this->view->render($response, 'index.twig', array('projects'=>$projects));
+	});
+	$app->get('/my', function ($request, $response) use ($chronos) {
+		$projects = $chronos->getUser()->getProjects();
+		$this->view->render($response, 'index.twig', array('projects'=>$projects));
 	});
 	$app->group('/project', function () use ($app, $chronos) {
 		$app->get('/{projectId}[/{action:(?:start|stop|trigger)}]', function ($request, $response, $args) use ($chronos) {
@@ -17,6 +22,10 @@ $app->group('', function () use ($app, $chronos) {
 			}
 			$this->view->render($response, 'project.twig', array('project'=>$project, 'projectId'=>$args['projectId'], 'action'=>$args['action']));
 		});
+	});
+
+	$app->get('/stop', function($request, $response) use ($chronos) {
+		$this->view->render($response, 'project.twig', array('action'=>'stop'));
 	});
 })->add(function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($app, $chronos) {
     // Use the PSR 7 $request object

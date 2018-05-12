@@ -1,3 +1,4 @@
+// Copyright (c) 2018 Rolf Michael Bislin. Licensed under the MIT license (see LICENSE.txt). 
 function timerAnim(starttime, stoptime) {
 	return function timerAnim(p5) {
 		let radius = 100;

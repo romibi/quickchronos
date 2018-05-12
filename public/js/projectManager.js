@@ -1,3 +1,4 @@
+// Copyright (c) 2018 Rolf Michael Bislin. Licensed under the MIT license (see LICENSE.txt). 
 function createProject() {
 	let project = {};
 	project.id = $('input[name="projectId"]').val();

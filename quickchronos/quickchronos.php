@@ -7,7 +7,6 @@ require_once 'entities/Activity.php';
 require_once 'entities/User.php';
 
 require_once 'controllers/ProjectController.php';
-require_once 'controllers/ActivityController.php';
 require_once 'controllers/UserController.php';
 
 use Psr\Http\Message\ServerRequestInterface;
@@ -105,7 +104,6 @@ class QuickChronos {
 
 	private function initialize() {
 		$this->controllers['project'] = new ProjectController($this->entityManager);
-		$this->controllers['activity'] = new ActivityController($this->entityManager);
 		$this->controllers['user'] = new UserController($this->entityManager);
 		
 		$this->initialized = true;

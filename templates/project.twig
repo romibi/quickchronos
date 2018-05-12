@@ -1,11 +1,11 @@
 {# Copyright (c) 2018 Rolf Michael Bislin. Licensed under the MIT license (see LICENSE.txt). #}
 {% extends 'layout.twig' %}
 {% block scripts %}
-	<script src="js/timer-anim.js"></script>
+	<script src="js/timerAnim.js"></script>
 	<script src="js/projectManager.js"></script>
 	<script type="text/javascript">
 		$(document).ready( function() {
-			{% if not project %}
+			{% if projectId and not project %}
 					$('#createProject').modal();
 			{% endif %}
 			{% if action %}
@@ -30,13 +30,22 @@
 	</script>
 {% endblock %}
 {% block content %}
-	{% if project %} 
+	{% if project or user.activeProject %} 
+		{% if not project %}
+			{% set project = user.activeProject %}
+		{% endif %}
 	<div id="projectInfo">
 		<h2>Project</h2>
 		<input type="hidden" name="projectId" value="{{project.id}}" />
 		Name: <input name="projectName" value="{{project.name}}" />
 	</div>
 	<div id="timer"></div>
+	<div class="actions">
+		<ul>
+			<li><button onclick="projectAction('start')">start</button></li>
+			<li><button onclick="projectAction('stop')">stop</button></li>
+		</ul>
+	</div>
 	{% endif %}
 {% endblock %}
 {% block modals %}

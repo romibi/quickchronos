@@ -61,8 +61,8 @@ class User extends AbstractEntity implements \JsonSerializable {
 		$this->username = $username;
 	}
 
-	public function getMembers() {
-		return $this->members;
+	public function getProjects() {
+		return $this->projects;
 	}
 
 	public function getActivities() {
