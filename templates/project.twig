@@ -34,17 +34,19 @@
 		{% if not project %}
 			{% set project = user.activeProject %}
 		{% endif %}
-	<div id="projectInfo">
-		<h2>Project</h2>
-		<input type="hidden" name="projectId" value="{{project.id}}" />
-		Name: <input name="projectName" value="{{project.name}}" />
-	</div>
-	<div id="timer"></div>
-	<div class="actions">
-		<ul>
-			<li><button onclick="projectAction('start')">start</button></li>
-			<li><button onclick="projectAction('stop')">stop</button></li>
-		</ul>
+	<div id="timer" class="col-md-9"></div>
+	<div class="col-md-3">
+		<div id="projectInfo">
+			<h2>Project</h2>
+			<input type="hidden" name="projectId" value="{{project.id}}" />
+			Name: <input name="projectName" value="{{project.name}}" />
+		</div>
+		<div class="actions">
+			<ul>
+				<li><button onclick="projectAction('start')">start</button></li>
+				<li><button onclick="projectAction('stop')">stop</button></li>
+			</ul>
+		</div>
 	</div>
 	{% endif %}
 {% endblock %}

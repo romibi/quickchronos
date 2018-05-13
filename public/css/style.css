@@ -1,0 +1,13 @@
+#timer {
+	position: relative;
+	margin: 0;
+	padding: 0;
+}
+
+#timer canvas {
+	display: block;
+	height: 80vmin !important;
+	width: auto !important;
+	margin: auto;
+	margin-top: 6%;
+}
