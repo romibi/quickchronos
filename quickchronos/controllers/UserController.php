@@ -15,7 +15,7 @@ class UserController {
 	}
 
 	public function find($key) {
-		if(preg_match("/^[0-9A-F]{8}\-(?:[0-9A-F]{4}\-){3}[0-9A-f]{12}$/", $key)) {
+		if(preg_match("/^[0-9A-F]{8}\-(?:[0-9A-F]{4}\-){3}[0-9A-f]{12}$/i", $key)) {
 			return $this->repository->find($key);
 		} else {
 			return $this->repository->findBy(array('username'=>$key))[0];
