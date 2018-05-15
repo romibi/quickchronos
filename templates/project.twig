@@ -47,6 +47,15 @@
 				<li><button onclick="projectAction('stop')">stop</button></li>
 			</ul>
 		</div>
+		<div class="activities">
+			<ul>
+			{% for activity in user.activities %}
+				{% if activity.project == project %}
+				<li>{{activity.start|date('d.m.Y H:m:s')}} - {{activity.stop|date('H:m:s')}}</li>
+				{% endif %}
+			{% endfor %}
+			</ul>
+		</div>
 	</div>
 	{% endif %}
 {% endblock %}
