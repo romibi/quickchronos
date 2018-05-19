@@ -53,12 +53,14 @@
 				{% if activity.project == project %}
 				<li>{{activity.start|date('d.m.Y H:i:s')}} - {{activity.stop|date('H:i:s')}}
 					{% if activity.stop %}
-						({{(activity.stop.timestamp-activity.start.timestamp-3600)|date('H:i:s')}})
+						({{activity.time}})
 					{% endif %}
 				</li>
 				{% endif %}
 			{% endfor %}
 			</ul>
+			user: {{project.time(user)}}<br/>
+			total: {{project.time}}
 		</div>
 	</div>
 	{% endif %}

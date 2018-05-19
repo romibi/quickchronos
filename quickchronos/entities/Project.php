@@ -80,6 +80,20 @@ class Project extends AbstractEntity implements \JsonSerializable {
 		return QuickChronos::getInstance()->project()->getLastActivityForUserOnProject($user, $this);
 	}
 
+	public function getSeconds($user=null) {
+		$duration = 0;
+		foreach ($this->activities as $activity) {
+			if($user == null || $activity->getUser()==$user) {
+				$duration += $activity->getSeconds();
+			}
+		}
+		return $duration;
+	}
+
+	public function getTime($user=null, $format='%dd, %H:%M:%S', $hoursInDay=24) {
+		return TimeHelper::convertTimestampToString($this->getSeconds($user), $format, $hoursInDay);
+	}
+
 	public function JsonSerialize()
 	{
 		return array(

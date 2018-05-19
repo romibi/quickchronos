@@ -9,6 +9,9 @@ require_once 'entities/User.php';
 require_once 'controllers/ProjectController.php';
 require_once 'controllers/UserController.php';
 
+require_once 'helpers/StringHelper.php';
+require_once 'helpers/TimeHelper.php';
+
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Dflydev\FigCookies\Cookies;

@@ -82,6 +82,15 @@ class Activity extends AbstractEntity implements \JsonSerializable {
 		$this->stop = $stop;
 	}
 
+	public function getSeconds() {
+		if($this->stop == null || $this->start == null) return 0;
+		return $this->stop->getTimestamp() - $this->start->getTimestamp();
+	}
+
+	public function getTime($format='%dd, %H:%M:%S', $hoursInDay=24) {
+		return TimeHelper::convertTimestampToString($this->getSeconds(), $format, $hoursInDay);
+	}
+
 	public function getProject() {
 		return $this->project;
 	}
